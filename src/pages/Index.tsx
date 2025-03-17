@@ -67,10 +67,10 @@ const Index = () => {
 
       <main className="flex-1 container max-w-screen-xl mx-auto px-4 py-6 pb-20 sm:pb-6">
         <div className="flex flex-col space-y-8">
-          <div className="flex justify-between">
+          <div className="flex flex-col space-y-6 md:flex-row justify-between">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tight">
-                Poker Leaderboard
+                Poker Dashboard
               </h1>
               <p className="text-muted-foreground">
                 Track your poker sessions and see who's winning.
@@ -85,7 +85,7 @@ const Index = () => {
           </div>
 
           {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
               title="Total Players"
               value={stats.totalPlayers}
