@@ -1,11 +1,21 @@
-
-import React from 'react';
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { User, Trash2, TrendingUp, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Player, formatCurrency, pokerDB } from '@/lib/data';
-import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { Player, formatCurrency, pokerDB } from "@/lib/data";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface PlayerCardProps {
   player: Player;
@@ -16,18 +26,18 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onDelete }) => {
   const navigate = useNavigate();
   const profit = player.totalCashOut - player.totalBuyIn;
   const isProfitable = profit >= 0;
-  
+
   const handleDelete = () => {
     if (pokerDB.deletePlayer(player.id)) {
       onDelete(player.id);
       toast.success(`${player.name} has been removed`);
     }
   };
-  
+
   const viewPlayerDetails = () => {
     navigate(`/players/${player.id}`);
   };
-  
+
   return (
     <Card className="glass-card card-hover w-full animate-fade-in overflow-hidden">
       <CardHeader className="pb-3 flex flex-row items-center justify-between">
@@ -37,9 +47,39 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onDelete }) => {
           </div>
           <CardTitle className="text-xl text-balance">{player.name}</CardTitle>
         </div>
-        <Button variant="ghost" size="icon" onClick={handleDelete}>
+        {/* <Button variant="ghost" size="icon" onClick={handleDelete}>
           <Trash2 className="h-5 w-5 text-muted-foreground hover:text-destructive" />
-        </Button>
+        </Button> */}
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-red-500 hover:text-red-700"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Trash2 className="h-5 w-5 text-muted-foreground hover:text-destructive" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete {player.name} and remove them from
+                all statistics. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-4 py-2">
@@ -49,10 +89,12 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onDelete }) => {
           </div>
           <div className="flex flex-col">
             <p className="text-sm text-muted-foreground">Buy-ins</p>
-            <p className="text-xl font-medium">{formatCurrency(player.totalBuyIn)}</p>
+            <p className="text-xl font-medium">
+              {formatCurrency(player.totalBuyIn)}
+            </p>
           </div>
         </div>
-        
+
         <div className="mt-2 flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">Total Profit/Loss</p>
@@ -62,17 +104,19 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onDelete }) => {
               ) : (
                 <TrendingDown className="mr-2 h-4 w-4 text-poker-red" />
               )}
-              <p 
-                className={`text-xl font-semibold ${isProfitable ? 'text-poker-green' : 'text-poker-red'}`}
+              <p
+                className={`text-xl font-semibold ${
+                  isProfitable ? "text-poker-green" : "text-poker-red"
+                }`}
               >
                 {formatCurrency(profit)}
               </p>
             </div>
           </div>
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
+
+          <Button
+            variant="outline"
+            size="sm"
             className="mt-2"
             onClick={viewPlayerDetails}
           >
