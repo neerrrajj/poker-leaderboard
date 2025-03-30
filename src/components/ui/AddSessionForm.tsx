@@ -225,7 +225,7 @@ const AddSessionForm: React.FC<AddSessionFormProps> = ({ onSessionAdded }) => {
                         className="h-7 w-7"
                         onClick={() => {
                           const current = players[index].buyIn;
-                          handleBuyInChange(index, Math.max(0, current - 25).toString());
+                          handleBuyInChange(index, Math.max(0, current - 10).toString());
                         }}
                       >
                         <MinusCircle className="h-4 w-4" />
@@ -234,7 +234,7 @@ const AddSessionForm: React.FC<AddSessionFormProps> = ({ onSessionAdded }) => {
                       <Input
                         type="number"
                         min="0"
-                        step="25"
+                        step="5"
                         value={player.buyIn || ''}
                         onChange={(e) => handleBuyInChange(index, e.target.value)}
                         className="w-20 text-center"
@@ -247,7 +247,7 @@ const AddSessionForm: React.FC<AddSessionFormProps> = ({ onSessionAdded }) => {
                         className="h-7 w-7"
                         onClick={() => {
                           const current = players[index].buyIn;
-                          handleBuyInChange(index, (current + 25).toString());
+                          handleBuyInChange(index, (current + 10).toString());
                         }}
                       >
                         <PlusCircle className="h-4 w-4" />
